@@ -1,25 +1,27 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import "./firebase/init";
+import "./App.css";
+import SetNotificationUser from "./containers/SetNotificationsUser";
 
 class App extends Component {
+  state = {
+    location: false,
+    userId: false
+  };
+
+  componentDidMount() {}
+
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        <h1>THE APP</h1>
+        <SetNotificationUser
+          setLocation={location => this.setState({ location })}
+          setUserId={userId => this.setState({ userId })}
+        />
+        <div>
+          <pre>{JSON.stringify(this.state, null, 2)}</pre>
+        </div>
       </div>
     );
   }
