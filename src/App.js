@@ -4,6 +4,7 @@ import "./App.css";
 import SetNotificationUser from "./containers/SetNotificationsUser";
 import SetLocation from "./containers/SetLocation";
 import { DEFAULT_SEARCH_RADIUS } from "./config";
+import PlanningLocations from "./containers/PlanningLocations";
 
 class App extends Component {
   state = {
@@ -33,7 +34,10 @@ class App extends Component {
           setLocation={this.setLocation}
           userId={this.state.userId}
         />
-
+        <PlanningLocations
+          location={this.state.location}
+          searchRadius={this.state.searchRadius}
+        />
         <div>
           <pre>{JSON.stringify(this.state, null, 2)}</pre>
         </div>

@@ -1,6 +1,7 @@
 import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/messaging";
+import { GeoFirestore } from "geofirestore";
 
 const config = {
   apiKey: "AIzaSyCR88UO7g_tp1b-5o81LyD_DQUm9IBkdP4",
@@ -38,4 +39,6 @@ firestore.enablePersistence().catch(function(err) {
   // TODO: Show warnings
 });
 
-export { messaging, firestore };
+const geoFirestore = new GeoFirestore(firestore);
+
+export { messaging, firestore, geoFirestore };
