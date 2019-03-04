@@ -16,7 +16,13 @@ class SetNotificationUser extends React.Component {
   };
 
   componentDidMount() {
+    // Attempt to get token and then any existing user
     this.getToken();
+    // Callback fired if Instance ID token is updated.
+    messaging.onTokenRefresh(() => {
+      console.log("onTokenRefresh called...");
+      this.getToken();
+    });
   }
 
   getToken = () => {
@@ -57,6 +63,7 @@ class SetNotificationUser extends React.Component {
   };
 
   getExistingUser = token => {
+    this.setState({ fetching: true });
     firestore
       .collection("users")
       .doc(token)
@@ -68,9 +75,11 @@ class SetNotificationUser extends React.Component {
           // doc.data() will be undefined in this case
           console.log("No such document!");
         }
+        this.setState({ fetching: false });
       })
-      .catch(function(error) {
-        console.log("Error getting document:", error);
+      .catch(err => {
+        console.log("Error getting document:", err);
+        this.setState({ error: err.message, fetching: false });
       });
   };
 
