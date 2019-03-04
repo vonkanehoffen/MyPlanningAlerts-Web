@@ -3,16 +3,20 @@ import "./firebase/init";
 import "./App.css";
 import SetNotificationUser from "./containers/SetNotificationsUser";
 import SetLocation from "./containers/SetLocation";
+import { DEFAULT_SEARCH_RADIUS } from "./config";
 
 class App extends Component {
   state = {
     location: false,
-    userId: false
+    userId: false,
+    searchRadius: DEFAULT_SEARCH_RADIUS
   };
 
   componentDidMount() {}
 
   setLocation = location => this.setState({ location });
+
+  setSearchRadius = searchRadius => this.setState({ searchRadius });
 
   setUserId = userId => this.setState({ userId });
 
@@ -23,8 +27,12 @@ class App extends Component {
         <SetNotificationUser
           setLocation={this.setLocation}
           setUserId={this.setUserId}
+          setSearchRadius={this.setSearchRadius}
         />
-        <SetLocation setLocation={this.setLocation} />
+        <SetLocation
+          setLocation={this.setLocation}
+          userId={this.state.userId}
+        />
 
         <div>
           <pre>{JSON.stringify(this.state, null, 2)}</pre>

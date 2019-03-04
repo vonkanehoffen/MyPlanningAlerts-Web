@@ -70,7 +70,10 @@ class SetNotificationUser extends React.Component {
       .get()
       .then(doc => {
         if (doc.exists) {
-          console.log("Document data:", doc.data());
+          const data = doc.data();
+          console.log("User Document data:", data);
+          this.props.setLocation(data.location);
+          this.props.setSearchRadius(data.searchRadius);
         } else {
           // doc.data() will be undefined in this case
           console.log("No such document!");

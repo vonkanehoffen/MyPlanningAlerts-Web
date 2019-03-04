@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { GOOGLE_API_KEY } from "../config";
+import { DEFAULT_SEARCH_RADIUS, GOOGLE_API_KEY } from "../config";
+import { firestore } from "../firebase/init";
 
 class SetLocation extends React.Component {
   state = {
@@ -10,7 +11,8 @@ class SetLocation extends React.Component {
     locationPermission: false
   };
   static propTypes = {
-    setLocation: PropTypes.func.isRequired
+    setLocation: PropTypes.func.isRequired,
+    userId: PropTypes.oneOfType([PropTypes.string, PropTypes.bool])
   };
 
   doPostcodeLookup = () => {
@@ -29,26 +31,34 @@ class SetLocation extends React.Component {
         if (location.results.length < 1 || !location.results[0].geometry) {
           this.setState({ error: "Could not find location" });
         } else {
-          this.props.setLocation({
+          const loc = {
             lat: location.results[0].geometry.location.lat,
             lng: location.results[0].geometry.location.lng
-          });
+          };
+          this.props.setLocation(loc);
+          if (this.props.userId) {
+            this.setNotificationUserLocation(loc);
+          }
         }
       })
       .catch(err => this.setState({ fetching: false, error: err.message }));
   };
 
   // See https://developers.google.com/maps/documentation/javascript/geolocation
-  getUserLocation = () => {
+  getDeviceLocation = () => {
     if (navigator.geolocation) {
       this.setState({ fetching: true });
       navigator.geolocation.getCurrentPosition(
         position => {
           this.setState({ fetching: false, error: false });
-          this.props.setLocation({
+          const location = {
             lat: position.coords.latitude,
             lng: position.coords.longitude
-          });
+          };
+          this.props.setLocation(location);
+          if (this.props.userId) {
+            this.setNotificationUserLocation(location);
+          }
         },
         () => {
           this.setState({ fetching: false, error: "Could not get location." });
@@ -60,6 +70,22 @@ class SetLocation extends React.Component {
         error: "Sorry, your browser does not support Geolocation."
       });
     }
+  };
+
+  setNotificationUserLocation = location => {
+    this.setState({ fetching: true });
+    firestore
+      .collection("users")
+      .doc(this.props.userId)
+      .set({
+        location,
+        searchRadius: DEFAULT_SEARCH_RADIUS
+      })
+      .then(() => {
+        console.log("User data written:", this.props.userId, location);
+        this.setState({ fetching: false });
+      })
+      .catch(err => console.error("Error writing user data: ", err));
   };
 
   render() {
@@ -76,7 +102,7 @@ class SetLocation extends React.Component {
         {fetching && <div>fetching...</div>}
         {error && <div>error: {error}</div>}
         <button onClick={this.doPostcodeLookup}>Lookup</button>
-        <button onClick={this.getUserLocation}>Get Location</button>
+        <button onClick={this.getDeviceLocation}>Get Location</button>
       </div>
     );
   }
