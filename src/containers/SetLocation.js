@@ -25,21 +25,45 @@ class SetLocation extends React.Component {
     )
       .then(res => res.json())
       .then(location => {
-        this.setState({ fetching: false });
+        this.setState({ fetching: false, error: false });
         if (location.results.length < 1 || !location.results[0].geometry) {
           this.setState({ error: "Could not find location" });
         } else {
           this.props.setLocation({
-            latitude: location.results[0].geometry.location.lat,
-            longitude: location.results[0].geometry.location.lng
+            lat: location.results[0].geometry.location.lat,
+            lng: location.results[0].geometry.location.lng
           });
         }
       })
-      .catch(err => this.setState({ error: err.message }));
+      .catch(err => this.setState({ fetching: false, error: err.message }));
+  };
+
+  // See https://developers.google.com/maps/documentation/javascript/geolocation
+  getUserLocation = () => {
+    if (navigator.geolocation) {
+      this.setState({ fetching: true });
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          this.setState({ fetching: false, error: false });
+          this.props.setLocation({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          });
+        },
+        () => {
+          this.setState({ fetching: false, error: "Could not get location." });
+        }
+      );
+    } else {
+      // Browser doesn't support Geolocation
+      this.setState({
+        error: "Sorry, your browser does not support Geolocation."
+      });
+    }
   };
 
   render() {
-    const { postcode, fetching, error, locationPermission } = this.state;
+    const { postcode, fetching, error } = this.state;
     return (
       <div style={{ background: "#995e78" }}>
         <h4>SetLocation</h4>
@@ -52,6 +76,7 @@ class SetLocation extends React.Component {
         {fetching && <div>fetching...</div>}
         {error && <div>error: {error}</div>}
         <button onClick={this.doPostcodeLookup}>Lookup</button>
+        <button onClick={this.getUserLocation}>Get Location</button>
       </div>
     );
   }
