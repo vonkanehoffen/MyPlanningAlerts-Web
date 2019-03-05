@@ -24,7 +24,6 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <h1>THE APP</h1>
         <SetNotificationUser
           setLocation={this.setLocation}
           setUserId={this.setUserId}
@@ -38,9 +37,6 @@ class App extends Component {
           location={this.state.location}
           searchRadius={this.state.searchRadius}
         />
-        <div>
-          <pre>{JSON.stringify(this.state, null, 2)}</pre>
-        </div>
       </div>
     );
   }

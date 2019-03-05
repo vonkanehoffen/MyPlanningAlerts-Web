@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { messaging, firestore } from "../firebase/init";
+import NotificationStatus from "../components/NotificationStatus";
 
 class SetNotificationUser extends React.Component {
   state = {
@@ -87,19 +88,11 @@ class SetNotificationUser extends React.Component {
   };
 
   render() {
-    const { fetching, error, permissionRequired, pushEnabled } = this.state;
     return (
-      <div style={{ background: "#ff0" }}>
-        <h4>SetNotificationUser</h4>
-        {fetching && <div>Fetching...</div>}
-        {permissionRequired && (
-          <button onClick={this.requestPermission}>
-            Request push permission
-          </button>
-        )}
-        {pushEnabled && <div>Push enabled :-)</div>}
-        {error && <div>Error: {error}</div>}
-      </div>
+      <NotificationStatus
+        {...this.state}
+        requestPermission={this.requestPermission}
+      />
     );
   }
 }
