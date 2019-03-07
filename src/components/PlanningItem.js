@@ -3,6 +3,9 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import { Geokit } from "geokit";
 import SmallButton from "./SmallButton";
+import { AccountBalance, LocationOn, Home } from "styled-icons/material";
+import { Stamp } from "styled-icons/fa-solid/Stamp";
+import MetaField from "./MetaField";
 
 class PlanningItem extends React.Component {
   state = {
@@ -18,16 +21,30 @@ class PlanningItem extends React.Component {
     const { app, userLocation } = this.props;
 
     const distance = Math.round(Geokit.distance(app, userLocation) * 100) / 100;
-
+    console.log(app);
     return (
       <Outer>
         <Title>{app.title}</Title>
         <Distance>{distance}km</Distance>
+        {this.state.expanded && (
+          <>
+            <MetaField icon={<Home />} title="Address" value={app.address} />
+            <MetaField
+              icon={<Stamp />}
+              title="Validated date"
+              value={app.validatedDate}
+            />
+            <MetaField
+              icon={<AccountBalance />}
+              title="Planning ref:"
+              value={app.ref}
+            />
+          </>
+        )}
         <SmallButton
           onClick={() => this.setState({ expanded: !this.state.expanded })}
           label={app.status}
         />
-        {this.state.expanded && <>{app.address}</>}
       </Outer>
     );
   }
