@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import { LocationOn } from "styled-icons/material";
+import PlanningItem from "./PlanningItem";
 
 function PlanningList({
   location,
@@ -14,11 +15,8 @@ function PlanningList({
       {planningData.map((planningLocation, i) => (
         <PlanningLocation key={i}>
           <LocationIcon />
-          {/*<pre>{JSON.stringify(planningLocation, null, 2)}</pre>*/}
           {planningLocation.apps.map((app, i) => (
-            <PlanningItem key={i}>
-              <Title>{app.title}</Title>
-            </PlanningItem>
+            <PlanningItem app={app} key={i} userLocation={location} />
           ))}
         </PlanningLocation>
       ))}
@@ -44,14 +42,6 @@ const PlanningLocation = styled.div`
 const LocationIcon = styled(LocationOn)`
   width: 2rem;
   color: lightgreen;
-`;
-
-const PlanningItem = styled.div``;
-
-const Title = styled.h4`
-  margin: 0;
-  font-size: 1rem;
-  font-weight: normal;
 `;
 
 export default PlanningList;

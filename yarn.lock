@@ -4512,6 +4512,11 @@ geofirestore@^3.2.2:
     "@google-cloud/firestore" x.x.x
     "@types/node" x.x.x
 
+geokit@^0.1.3:
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/geokit/-/geokit-0.1.3.tgz#ae6d18f8508f9627a314673b34e3c6e377e49eeb"
+  integrity sha512-FzWk6CGtxW2ydizOLwFzA87r6sMdGp6iyDnzBxtThhtqyT5QrniCqahXfHCnNjagby75xd0ltkgM5HEHvVJlLg==
+
 get-caller-file@^1.0.1:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/get-caller-file/-/get-caller-file-1.0.3.tgz#f978fa4c90d1dfe7ff2d6beda2a515e713bdcf4a"
