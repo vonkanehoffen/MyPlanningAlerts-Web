@@ -27,7 +27,7 @@ function PlanningList({
 const Outer = styled.div`
   background: darkgreen;
   position: fixed;
-  top: 0;
+  top: 4rem;
   left: 0;
   bottom: 0;
   width: 30%;

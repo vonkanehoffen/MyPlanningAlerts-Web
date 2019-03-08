@@ -5,6 +5,7 @@ import SetNotificationUser from "./containers/SetNotificationsUser";
 import SetLocation from "./containers/SetLocation";
 import { DEFAULT_SEARCH_RADIUS } from "./config";
 import PlanningLocations from "./containers/PlanningLocations";
+import ActionBar from "./components/ActionBar";
 
 class App extends Component {
   state = {
@@ -24,15 +25,17 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <SetNotificationUser
-          setLocation={this.setLocation}
-          setUserId={this.setUserId}
-          setSearchRadius={this.setSearchRadius}
-        />
-        <SetLocation
-          setLocation={this.setLocation}
-          userId={this.state.userId}
-        />
+        <ActionBar>
+          <SetNotificationUser
+            setLocation={this.setLocation}
+            setUserId={this.setUserId}
+            setSearchRadius={this.setSearchRadius}
+          />
+          <SetLocation
+            setLocation={this.setLocation}
+            userId={this.state.userId}
+          />
+        </ActionBar>
         <PlanningLocations
           location={this.state.location}
           searchRadius={this.state.searchRadius}

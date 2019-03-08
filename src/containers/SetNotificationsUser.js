@@ -27,13 +27,13 @@ class SetNotificationUser extends React.Component {
   }
 
   getToken = () => {
-    this.setState({ fetching: true });
+    this.setState({ fetching: true, error: false });
     messaging
       .getToken()
       .then(currentToken => {
         if (currentToken) {
           this.props.setUserId(currentToken);
-          this.setState({ pushEnabled: true, fetching: false });
+          this.setState({ pushEnabled: true, fetching: false, error: false });
           this.getExistingUser(currentToken);
         } else {
           // Show permission request.
@@ -41,7 +41,11 @@ class SetNotificationUser extends React.Component {
             "No Instance ID token available. Request permission to generate one."
           );
           // Show permission UI.
-          this.setState({ permissionRequired: true, fetching: false });
+          this.setState({
+            permissionRequired: true,
+            fetching: false,
+            error: false
+          });
         }
       })
       .catch(err => {
@@ -57,14 +61,14 @@ class SetNotificationUser extends React.Component {
         console.log("Notification permission granted.");
         this.getToken();
       })
-      .catch(function(err) {
+      .catch(err => {
         console.log("Unable to get permission to notify.", err);
         this.setState({ error: err.message });
       });
   };
 
   getExistingUser = token => {
-    this.setState({ fetching: true });
+    this.setState({ fetching: true, error: false });
     firestore
       .collection("users")
       .doc(token)
@@ -79,7 +83,7 @@ class SetNotificationUser extends React.Component {
           // doc.data() will be undefined in this case
           console.log("No such document!");
         }
-        this.setState({ fetching: false });
+        this.setState({ fetching: false, error: false });
       })
       .catch(err => {
         console.log("Error getting document:", err);
