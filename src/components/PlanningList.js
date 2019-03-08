@@ -3,25 +3,49 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import { LocationOn } from "styled-icons/material";
 import PlanningItem from "./PlanningItem";
+import { lightGreen } from "../config";
 
-function PlanningList({
-  location,
-  planningData,
-  selectLocation,
-  selectedLocation
-}) {
-  return (
-    <Outer>
-      {planningData.map((planningLocation, i) => (
-        <PlanningLocation key={i}>
-          <LocationIcon />
-          {planningLocation.apps.map((app, i) => (
-            <PlanningItem app={app} key={i} userLocation={location} />
-          ))}
-        </PlanningLocation>
-      ))}
-    </Outer>
-  );
+class PlanningList extends React.Component {
+  locationRefs = [];
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (prevProps.selectedLocation !== this.props.selectedLocation) {
+      this.locationRefs[this.props.selectedLocation].scrollIntoView({
+        behavior: "smooth"
+      });
+    }
+  }
+
+  render() {
+    const {
+      location,
+      planningData,
+      selectLocation,
+      selectedLocation
+    } = this.props;
+    return (
+      <Outer>
+        <Info>
+          Total: {planningData.length}
+          <br />
+          Selected: {selectedLocation}
+        </Info>
+        {planningData.map((planningLocation, li) => (
+          <PlanningLocation key={li} ref={ref => (this.locationRefs[li] = ref)}>
+            <LocationIcon />
+            {planningLocation.apps.map((app, i) => (
+              <PlanningItem
+                app={app}
+                key={i}
+                userLocation={location}
+                selected={li === selectedLocation}
+              />
+            ))}
+          </PlanningLocation>
+        ))}
+      </Outer>
+    );
+  }
 }
 
 const Outer = styled.div`
@@ -32,6 +56,10 @@ const Outer = styled.div`
   bottom: 0;
   width: 30%;
   overflow-y: scroll;
+`;
+
+const Info = styled.div`
+  background: ${lightGreen};
 `;
 
 const PlanningLocation = styled.div`

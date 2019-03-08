@@ -19,19 +19,20 @@ class PlanningItem extends React.Component {
 
   static propTypes = {
     app: PropTypes.object.isRequired,
-    userLocation: PropTypes.object.isRequired
+    userLocation: PropTypes.object.isRequired,
+    selected: PropTypes.bool
   };
 
   render() {
-    const { app, userLocation } = this.props;
+    const { app, userLocation, selected } = this.props;
 
     const distance = Math.round(Geokit.distance(app, userLocation) * 100) / 100;
-    console.log(app);
+
     return (
       <Outer onClick={() => this.setState({ expanded: !this.state.expanded })}>
         <Title>{app.title}</Title>
         <Distance>{distance}km</Distance>
-        {this.state.expanded && (
+        {(this.state.expanded || selected) && (
           <>
             <MetaField icon={<Home />} title="Address" value={app.address} />
             <MetaField

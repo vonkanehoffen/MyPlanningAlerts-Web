@@ -24,7 +24,7 @@ function PlanningMap({ location, planningData, selectLocation, google }) {
 
         return (
           <Marker
-            onClick={selectLocation}
+            onClick={() => selectLocation(i)}
             name={title}
             position={{
               lat: planningLocation.coordinates._lat,

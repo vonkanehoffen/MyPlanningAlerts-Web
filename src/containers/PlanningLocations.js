@@ -45,7 +45,9 @@ class PlanningLocations extends React.Component {
     });
   };
 
-  selectLocation = () => {};
+  selectLocation = index => {
+    this.setState({ selectedLocation: index });
+  };
 
   render() {
     if (!this.props.location) return false;
