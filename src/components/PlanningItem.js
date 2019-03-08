@@ -23,16 +23,25 @@ class PlanningItem extends React.Component {
     selected: PropTypes.bool
   };
 
+  componentWillReceiveProps(nextProps, nextContext) {
+    if (nextProps.selected !== this.props.selected) {
+      this.setState({ expanded: nextProps.selected });
+    }
+  }
+
   render() {
     const { app, userLocation, selected } = this.props;
 
     const distance = Math.round(Geokit.distance(app, userLocation) * 100) / 100;
 
     return (
-      <Outer onClick={() => this.setState({ expanded: !this.state.expanded })}>
+      <Outer
+        onClick={() => this.setState({ expanded: !this.state.expanded })}
+        expanded={this.state.expanded}
+      >
         <Title>{app.title}</Title>
         <Distance>{distance}km</Distance>
-        {(this.state.expanded || selected) && (
+        {this.state.expanded && (
           <>
             <MetaField icon={<Home />} title="Address" value={app.address} />
             <MetaField
@@ -56,6 +65,7 @@ class PlanningItem extends React.Component {
 const Outer = styled.div`
   padding: 0.5rem;
   cursor: pointer;
+  ${props => props.expanded && `background: rgba(0, 0, 0, 0.2);`}
   &:hover {
     background: rgba(0, 0, 0, 0.2);
   }
