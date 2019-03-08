@@ -7,6 +7,7 @@ const BigButton = styled.button`
   color: white;
   border: none;
   padding: 0.5rem 1rem;
+  margin: 0.5rem;
   font-weight: bold;
   border-radius: 1rem;
   font-size: 1rem;

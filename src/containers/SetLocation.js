@@ -2,21 +2,25 @@ import React from "react";
 import PropTypes from "prop-types";
 import { DEFAULT_SEARCH_RADIUS, GOOGLE_API_KEY } from "../config";
 import { firestore } from "../firebase/init";
-import LocationOptions from "./LocationOptions";
+import LocationOptions from "../components/LocationOptions";
 
 class SetLocation extends React.Component {
   state = {
     postcode: "",
     fetching: false,
     error: false,
-    locationPermission: false
+    locationPermission: false,
+    dialogOpen: false
   };
   static propTypes = {
+    location: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     setLocation: PropTypes.func.isRequired,
     userId: PropTypes.oneOfType([PropTypes.string, PropTypes.bool])
   };
 
   setPostcode = e => this.setState({ postcode: e.target.value });
+
+  toggleDialog = () => this.setState({ dialogOpen: !this.state.dialogOpen });
 
   doPostcodeLookup = () => {
     const params = new URLSearchParams();
@@ -95,6 +99,8 @@ class SetLocation extends React.Component {
     return (
       <LocationOptions
         {...this.state}
+        dialogOpen={this.state.dialogOpen || !this.props.location}
+        toggleDialog={this.toggleDialog}
         setPostcode={this.setPostcode}
         doPostcodeLookup={this.doPostcodeLookup}
         getDeviceLocation={this.getDeviceLocation}

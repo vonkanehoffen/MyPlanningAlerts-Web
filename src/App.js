@@ -34,6 +34,7 @@ class App extends Component {
           <SetLocation
             setLocation={this.setLocation}
             userId={this.state.userId}
+            location={this.state.location}
           />
         </ActionBar>
         <PlanningLocations

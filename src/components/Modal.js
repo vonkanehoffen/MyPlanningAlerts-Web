@@ -1,12 +1,16 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import { darkGreen } from "../config";
+import { darkGreen, lightGreen } from "../config";
+import { Close } from "styled-icons/material/Close";
 
-function Modal({ children }) {
+function Modal({ children, closeAction }) {
   return (
     <Outer>
-      <Dialog>{children}</Dialog>
+      <Dialog>
+        {closeAction && <CloseIcon onClick={closeAction} />}
+        {children}
+      </Dialog>
     </Outer>
   );
 }
@@ -30,6 +34,13 @@ const Dialog = styled.div`
   margin: 1rem;
   color: white;
   border-radius: 0.5rem;
+`;
+
+const CloseIcon = styled(Close)`
+  color: ${lightGreen};
+  width: 2rem;
+  float: right;
+  cursor: pointer;
 `;
 
 export default Modal;
