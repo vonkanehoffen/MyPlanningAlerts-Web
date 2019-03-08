@@ -3,9 +3,14 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import { Geokit } from "geokit";
 import SmallButton from "./SmallButton";
-import { AccountBalance, LocationOn, Home } from "styled-icons/material";
-import { Stamp } from "styled-icons/fa-solid/Stamp";
+import {
+  AccountBalance,
+  LocationOn,
+  Home,
+  PermContactCalendar
+} from "styled-icons/material";
 import MetaField from "./MetaField";
+import { lightGreen } from "../config";
 
 class PlanningItem extends React.Component {
   state = {
@@ -23,14 +28,14 @@ class PlanningItem extends React.Component {
     const distance = Math.round(Geokit.distance(app, userLocation) * 100) / 100;
     console.log(app);
     return (
-      <Outer>
+      <Outer onClick={() => this.setState({ expanded: !this.state.expanded })}>
         <Title>{app.title}</Title>
         <Distance>{distance}km</Distance>
         {this.state.expanded && (
           <>
             <MetaField icon={<Home />} title="Address" value={app.address} />
             <MetaField
-              icon={<Stamp />}
+              icon={<PermContactCalendar />}
               title="Validated date"
               value={app.validatedDate}
             />
@@ -41,16 +46,19 @@ class PlanningItem extends React.Component {
             />
           </>
         )}
-        <SmallButton
-          onClick={() => this.setState({ expanded: !this.state.expanded })}
-          label={app.status}
-        />
+        <SmallButton label={app.status} />
       </Outer>
     );
   }
 }
 
-const Outer = styled.div``;
+const Outer = styled.div`
+  padding: 0.5rem;
+  cursor: pointer;
+  &:hover {
+    background: rgba(0, 0, 0, 0.2);
+  }
+`;
 
 const Title = styled.h4`
   margin: 0;
@@ -61,7 +69,8 @@ const Title = styled.h4`
 const Distance = styled.div`
   font-size: 0.8rem;
   font-weight: bold;
-  color: lightgreen;
+  margin: 0.5rem 0;
+  color: ${lightGreen};
 `;
 
 export default PlanningItem;

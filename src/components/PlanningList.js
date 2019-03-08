@@ -27,16 +27,16 @@ function PlanningList({
 const Outer = styled.div`
   background: darkgreen;
   position: fixed;
-  top: 1rem;
-  right: 1rem;
-  bottom: 1rem;
-  width: 20rem;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 30%;
   overflow-y: scroll;
 `;
 
 const PlanningLocation = styled.div`
-  padding: 1rem;
   color: #fff;
+  margin-top: 0.5rem;
 `;
 
 const LocationIcon = styled(LocationOn)`
