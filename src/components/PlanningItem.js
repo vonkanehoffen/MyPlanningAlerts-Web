@@ -19,7 +19,6 @@ class PlanningItem extends React.Component {
 
   static propTypes = {
     app: PropTypes.object.isRequired,
-    userLocation: PropTypes.object.isRequired,
     selected: PropTypes.bool
   };
 
@@ -30,17 +29,14 @@ class PlanningItem extends React.Component {
   }
 
   render() {
-    const { app, userLocation, selected } = this.props;
-
-    const distance = Math.round(Geokit.distance(app, userLocation) * 100) / 100;
+    const { app, selected } = this.props;
 
     return (
       <Outer
         onClick={() => this.setState({ expanded: !this.state.expanded })}
         expanded={this.state.expanded}
       >
-        <Title>{app.title}</Title>
-        <Distance>{distance}km</Distance>
+        <Title>{app.proposal}</Title>
         {this.state.expanded && (
           <>
             <MetaField icon={<Home />} title="Address" value={app.address} />
@@ -52,7 +48,7 @@ class PlanningItem extends React.Component {
             <MetaField
               icon={<AccountBalance />}
               title="Planning ref:"
-              value={app.ref}
+              value={app.reference}
             />
           </>
         )}
@@ -75,13 +71,6 @@ const Title = styled.h4`
   margin: 0;
   font-size: 1rem;
   font-weight: normal;
-`;
-
-const Distance = styled.div`
-  font-size: 0.8rem;
-  font-weight: bold;
-  margin: 0.5rem 0;
-  color: ${lightGreen};
 `;
 
 export default PlanningItem;

@@ -37,7 +37,7 @@ class PlanningLocations extends React.Component {
     const query = geoCollection.near({
       center: new firebase.firestore.GeoPoint(location.lat, location.lng),
       // radius: searchRadius // km
-      radius: 500
+      radius: 2
     });
     query.get().then(snapshot => {
       let planningData = [];

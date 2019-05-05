@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { LocationOn } from "styled-icons/material";
 import PlanningItem from "./PlanningItem";
 import { lightGreen } from "../config";
+import Distance from "./Distance";
 
 class PlanningList extends React.Component {
   locationRefs = [];
@@ -31,13 +32,20 @@ class PlanningList extends React.Component {
           Selected: {selectedLocation}
         </Info>
         {planningData.map((planningLocation, li) => (
-          <PlanningLocation key={li} ref={ref => (this.locationRefs[li] = ref)}>
+          <PlanningLocation
+            key={li}
+            ref={ref => (this.locationRefs[li] = ref)}
+            onClick={() => selectLocation(li)}
+          >
             <LocationIcon />
+            <Distance
+              locationCoordinates={planningLocation.coordinates}
+              userCoordinates={location}
+            />
             {planningLocation.apps.map((app, i) => (
               <PlanningItem
                 app={app}
                 key={i}
-                userLocation={location}
                 selected={li === selectedLocation}
               />
             ))}
